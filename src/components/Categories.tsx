@@ -5,6 +5,8 @@ import { ArrowRight, Shirt, Smartphone, UtensilsCrossed, Home, Watch } from "luc
 import fashionImage from "@/assets/fashion-category.jpg";
 import electronicsImage from "@/assets/electronics-category.jpg";
 import foodstuffImage from "@/assets/foodstuff-category.jpg";
+import householdImage from "@/assets/household-category.jpg";
+import accessoriesImage from "@/assets/accessories-category.jpg";
 
 const Categories = () => {
   const categories = [
@@ -40,7 +42,7 @@ const Categories = () => {
       name: "Household",
       description: "Kitchen items, cleaning supplies",
       icon: Home,
-      image: "/placeholder.svg",
+      image: householdImage,
       productCount: "150+",
       color: "bg-green-500",
     },
@@ -49,7 +51,7 @@ const Categories = () => {
       name: "Accessories",
       description: "Watches, jewelry, bags",
       icon: Watch,
-      image: "/placeholder.svg",
+      image: accessoriesImage,
       productCount: "250+",
       color: "bg-purple-500",
     },
