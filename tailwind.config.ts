@@ -47,6 +47,16 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        marketplace: {
+          hero: "var(--marketplace-hero)",
+          accent: "var(--marketplace-accent)",
+          card: "hsl(var(--marketplace-card))",
+          "card-hover": "hsl(var(--marketplace-card-hover))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -84,6 +94,13 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fadeIn 0.5s ease-in-out",
+        "slide-up": "slideUp 0.3s ease-out",
+      },
+      boxShadow: {
+        elegant: "var(--shadow-elegant)",
+        product: "var(--shadow-product)",
+        hover: "var(--shadow-hover)",
       },
     },
   },
