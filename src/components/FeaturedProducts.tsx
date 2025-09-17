@@ -2,6 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, MessageCircle, MapPin } from "lucide-react";
+import iphoneImage from "@/assets/product-iphone.jpg";
+import ankaraImage from "@/assets/product-ankara.jpg";
+import riceImage from "@/assets/product-rice.jpg";
+import speakerImage from "@/assets/product-speaker.jpg";
+import necklaceImage from "@/assets/product-necklace.jpg";
+import palmoilImage from "@/assets/product-palmoil.jpg";
 
 const FeaturedProducts = () => {
   const products = [
@@ -10,7 +16,7 @@ const FeaturedProducts = () => {
       name: "iPhone 14 Pro Max",
       price: "₦850,000",
       originalPrice: "₦950,000",
-      image: "/placeholder.svg",
+      image: iphoneImage,
       vendor: "TechHub Arena",
       rating: 4.8,
       reviews: 24,
@@ -23,7 +29,7 @@ const FeaturedProducts = () => {
       name: "Premium Ankara Fabric",
       price: "₦8,500",
       originalPrice: "₦12,000",
-      image: "/placeholder.svg",
+      image: ankaraImage,
       vendor: "Mama Kemi Fabrics",
       rating: 4.9,
       reviews: 67,
@@ -36,7 +42,7 @@ const FeaturedProducts = () => {
       name: "50kg Bag of Rice",
       price: "₦45,000",
       originalPrice: "₦50,000",
-      image: "/placeholder.svg",
+      image: riceImage,
       vendor: "Alhaji Grains Store",
       rating: 4.7,
       reviews: 89,
@@ -49,7 +55,7 @@ const FeaturedProducts = () => {
       name: "Bluetooth Speaker",
       price: "₦15,500",
       originalPrice: "₦20,000",
-      image: "/placeholder.svg",
+      image: speakerImage,
       vendor: "SoundMax Electronics",
       rating: 4.6,
       reviews: 31,
@@ -62,7 +68,7 @@ const FeaturedProducts = () => {
       name: "Gold Chain Necklace",
       price: "₦75,000",
       originalPrice: "₦90,000",
-      image: "/placeholder.svg",
+      image: necklaceImage,
       vendor: "Royal Jewelry",
       rating: 4.9,
       reviews: 15,
@@ -75,7 +81,7 @@ const FeaturedProducts = () => {
       name: "Palm Oil (25 Litres)",
       price: "₦28,000",
       originalPrice: "₦32,000",
-      image: "/placeholder.svg",
+      image: palmoilImage,
       vendor: "Fresh Oil Depot",
       rating: 4.8,
       reviews: 53,
