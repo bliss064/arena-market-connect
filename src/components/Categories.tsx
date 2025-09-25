@@ -11,24 +11,6 @@ import accessoriesImage from "@/assets/accessories-category.jpg";
 const Categories = () => {
   const categories = [
     {
-      id: "fashion",
-      name: "Fashion",
-      description: "Ankara, sneakers, accessories",
-      icon: Shirt,
-      image: fashionImage,
-      productCount: "500+",
-      color: "bg-pink-500",
-    },
-    {
-      id: "electronics",
-      name: "Electronics", 
-      description: "Phones, speakers, power banks",
-      icon: Smartphone,
-      image: electronicsImage,
-      productCount: "300+",
-      color: "bg-blue-500",
-    },
-    {
       id: "foodstuff",
       name: "Foodstuff",
       description: "Rice, beans, cooking oil",
@@ -36,6 +18,15 @@ const Categories = () => {
       image: foodstuffImage,
       productCount: "200+",
       color: "bg-orange-500",
+    },
+    {
+      id: "fashion",
+      name: "Fashion",
+      description: "Ankara, sneakers, accessories",
+      icon: Shirt,
+      image: fashionImage,
+      productCount: "500+",
+      color: "bg-pink-500",
     },
     {
       id: "household",
@@ -47,13 +38,13 @@ const Categories = () => {
       color: "bg-green-500",
     },
     {
-      id: "accessories",
-      name: "Accessories",
-      description: "Watches, jewelry, bags",
-      icon: Watch,
-      image: accessoriesImage,
-      productCount: "250+",
-      color: "bg-purple-500",
+      id: "electronics",
+      name: "Electronics", 
+      description: "Phones, speakers, power banks",
+      icon: Smartphone,
+      image: electronicsImage,
+      productCount: "300+",
+      color: "bg-blue-500",
     },
   ];
 

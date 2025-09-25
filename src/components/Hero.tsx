@@ -24,14 +24,13 @@ const Hero = () => {
           
           {/* Headline */}
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-            Shop Arena Market 
-            <span className="text-accent"> Online</span>
+            Arena Market 
+            <span className="text-accent"> Connect</span>
           </h1>
           
           {/* Subheadline */}
           <p className="text-xl text-white/90 mb-8 leading-relaxed">
-            Your favorite Arena Market vendors now deliver directly to you. 
-            Fresh products, trusted sellers, same great prices.
+            Shop Arena Market Online. Sellers list, buyers shop, U&C Logistics delivers.
           </p>
           
           {/* CTA Buttons */}
