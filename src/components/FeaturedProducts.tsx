@@ -2,12 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, MessageCircle, MapPin } from "lucide-react";
-import iphoneImage from "@/assets/product-iphone.jpg";
-import ankaraImage from "@/assets/product-ankara.jpg";
 import riceImage from "@/assets/product-rice.jpg";
-import speakerImage from "@/assets/product-speaker.jpg";
-import necklaceImage from "@/assets/product-necklace.jpg";
-import palmoilImage from "@/assets/product-palmoil.jpg";
+import tomatoesImage from "@/assets/product-tomatoes.jpg";
+import poloImage from "@/assets/product-polo.jpg";
+import sneakersImage from "@/assets/product-sneakers.jpg";
+import mopBucketImage from "@/assets/product-mop-bucket.jpg";
+import chargerImage from "@/assets/product-charger.jpg";
 
 const FeaturedProducts = () => {
   const products = [
@@ -25,7 +25,7 @@ const FeaturedProducts = () => {
       id: 2,
       name: "Fresh Tomatoes Basket",
       price: "₦7,500",
-      image: "/placeholder.svg",
+      image: tomatoesImage,
       vendor: "Arena Fresh Foods",
       rating: 4.7,
       reviews: 32,
@@ -35,7 +35,7 @@ const FeaturedProducts = () => {
       id: 3,
       name: "Men's Polo Shirt",
       price: "₦5,500",
-      image: "/placeholder.svg",
+      image: poloImage,
       vendor: "Arena Trends",
       rating: 4.6,
       reviews: 28,
@@ -45,7 +45,7 @@ const FeaturedProducts = () => {
       id: 4,
       name: "Sneakers",
       price: "₦18,000",
-      image: "/placeholder.svg",
+      image: sneakersImage,
       vendor: "Arena Footwears",
       rating: 4.9,
       reviews: 67,
@@ -55,7 +55,7 @@ const FeaturedProducts = () => {
       id: 5,
       name: "Mop & Bucket Set",
       price: "₦4,200",
-      image: "/placeholder.svg",
+      image: mopBucketImage,
       vendor: "Arena Home Supplies",
       rating: 4.5,
       reviews: 19,
@@ -65,7 +65,7 @@ const FeaturedProducts = () => {
       id: 6,
       name: "Phone Charger",
       price: "₦2,500",
-      image: "/placeholder.svg",
+      image: chargerImage,
       vendor: "Arena Gadgets",
       rating: 4.7,
       reviews: 84,
