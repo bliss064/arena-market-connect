@@ -25,7 +25,7 @@ const FeaturedProducts = () => {
       id: 2,
       name: "Fresh Tomatoes Basket",
       price: "₦7,500",
-      image: palmoilImage, // Using palm oil image as placeholder for now
+      image: "/placeholder.svg",
       vendor: "Arena Fresh Foods",
       rating: 4.7,
       reviews: 32,
@@ -35,7 +35,7 @@ const FeaturedProducts = () => {
       id: 3,
       name: "Men's Polo Shirt",
       price: "₦5,500",
-      image: ankaraImage,
+      image: "/placeholder.svg",
       vendor: "Arena Trends",
       rating: 4.6,
       reviews: 28,
@@ -45,7 +45,7 @@ const FeaturedProducts = () => {
       id: 4,
       name: "Sneakers",
       price: "₦18,000",
-      image: necklaceImage, // Using necklace image as placeholder for now
+      image: "/placeholder.svg",
       vendor: "Arena Footwears",
       rating: 4.9,
       reviews: 67,
@@ -55,7 +55,7 @@ const FeaturedProducts = () => {
       id: 5,
       name: "Mop & Bucket Set",
       price: "₦4,200",
-      image: speakerImage, // Using speaker image as placeholder for now
+      image: "/placeholder.svg",
       vendor: "Arena Home Supplies",
       rating: 4.5,
       reviews: 19,
@@ -65,7 +65,7 @@ const FeaturedProducts = () => {
       id: 6,
       name: "Phone Charger",
       price: "₦2,500",
-      image: iphoneImage, // Using iPhone image as placeholder for now
+      image: "/placeholder.svg",
       vendor: "Arena Gadgets",
       rating: 4.7,
       reviews: 84,
