@@ -187,6 +187,15 @@ const Footer = () => {
             <a href="#" className="text-primary-foreground/80 hover:text-accent transition-colors">Cookies</a>
           </div>
         </div>
+
+        <Separator className="my-6 bg-primary-foreground/20" />
+
+        {/* Attribution */}
+        <div className="text-center">
+          <p className="text-primary-foreground/60 text-xs">
+            Powered by Woobs Resources (by Blessing .O. Nosakhare, NYSC IT Assistant)
+          </p>
+        </div>
       </div>
     </footer>
   );
