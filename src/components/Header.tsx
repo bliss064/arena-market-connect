@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Search, Menu, X, ShoppingBag, MapPin, Phone, User, ShoppingCart } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { useAuth } from "@/hooks/useAuth";
+import { useCart } from "@/hooks/useCart";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +19,7 @@ import {
 const Header = () => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const { user, signOut } = useAuth();
+  const { cartCount } = useCart();
   const navigate = useNavigate();
 
   const categories = [
@@ -140,8 +142,13 @@ const Header = () => {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" onClick={() => navigate("/cart")} className="relative">
               <ShoppingCart className="h-5 w-5" />
+              {cartCount > 0 && (
+                <Badge className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs">
+                  {cartCount}
+                </Badge>
+              )}
             </Button>
             
             {user ? (
