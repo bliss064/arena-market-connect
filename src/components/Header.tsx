@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Search, Menu, X, ShoppingBag, MapPin, Phone, User, ShoppingCart } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { useAuth } from "@/hooks/useAuth";
 import {
   DropdownMenu,
@@ -85,47 +85,58 @@ const Header = () => {
           </div>
 
           {/* Mobile Menu */}
-          <Sheet>
-            <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon">
-                <Menu className="h-6 w-6" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-[300px]">
-              <div className="flex flex-col gap-4 mt-8">
-                {user ? (
-                  <>
-                    <div className="flex items-center gap-2 pb-4 border-b">
-                      <User className="h-5 w-5" />
-                      <span className="font-semibold">My Account</span>
-                    </div>
-                    <Button variant="ghost" className="justify-start" onClick={() => navigate("/dashboard")}>
-                      Dashboard
+          <div className="flex items-center gap-2 md:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" aria-label="Open menu">
+                  <Menu className="h-6 w-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px]">
+                <SheetHeader className="mb-2">
+                  <SheetTitle>Menu</SheetTitle>
+                  <SheetDescription className="sr-only">Main navigation</SheetDescription>
+                </SheetHeader>
+                <div className="flex flex-col gap-4">
+                  {user ? (
+                    <>
+                      <div className="flex items-center gap-2 pb-4 border-b">
+                        <User className="h-5 w-5" />
+                        <span className="font-semibold">My Account</span>
+                      </div>
+                      <Button variant="ghost" className="justify-start" onClick={() => navigate("/dashboard")}>
+                        Dashboard
+                      </Button>
+                      <Button variant="ghost" className="justify-start" onClick={() => navigate("/orders")}>
+                        Orders
+                      </Button>
+                      <Button variant="ghost" className="justify-start text-destructive" onClick={signOut}>
+                        Sign Out
+                      </Button>
+                    </>
+                  ) : (
+                    <Button className="w-full" onClick={() => navigate("/auth")}>
+                      Sign In
                     </Button>
-                    <Button variant="ghost" className="justify-start" onClick={() => navigate("/orders")}>
-                      Orders
-                    </Button>
-                    <Button variant="ghost" className="justify-start text-destructive" onClick={signOut}>
-                      Sign Out
-                    </Button>
-                  </>
-                ) : (
-                  <Button className="w-full" onClick={() => navigate("/auth")}>
-                    Sign In
-                  </Button>
-                )}
-                
-                <div className="pt-4 border-t">
-                  <h3 className="font-semibold text-lg mb-4">Categories</h3>
-                  {categories.map((category) => (
-                    <Button key={category} variant="ghost" className="justify-start w-full">
-                      {category}
-                    </Button>
-                  ))}
+                  )}
+
+                  <div className="pt-4 border-t">
+                    <h3 className="font-semibold text-lg mb-4">Categories</h3>
+                    {categories.map((category) => (
+                      <Button key={category} variant="ghost" className="justify-start w-full">
+                        {category}
+                      </Button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </SheetContent>
-          </Sheet>
+              </SheetContent>
+            </Sheet>
+            {!user && (
+              <Button variant="outline" size="sm" onClick={() => navigate("/auth")}>
+                Sign In
+              </Button>
+            )}
+          </div>
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
