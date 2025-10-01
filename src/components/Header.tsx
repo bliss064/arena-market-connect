@@ -93,12 +93,36 @@ const Header = () => {
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px]">
               <div className="flex flex-col gap-4 mt-8">
-                <h3 className="font-semibold text-lg">Categories</h3>
-                {categories.map((category) => (
-                  <Button key={category} variant="ghost" className="justify-start">
-                    {category}
+                {user ? (
+                  <>
+                    <div className="flex items-center gap-2 pb-4 border-b">
+                      <User className="h-5 w-5" />
+                      <span className="font-semibold">My Account</span>
+                    </div>
+                    <Button variant="ghost" className="justify-start" onClick={() => navigate("/dashboard")}>
+                      Dashboard
+                    </Button>
+                    <Button variant="ghost" className="justify-start" onClick={() => navigate("/orders")}>
+                      Orders
+                    </Button>
+                    <Button variant="ghost" className="justify-start text-destructive" onClick={signOut}>
+                      Sign Out
+                    </Button>
+                  </>
+                ) : (
+                  <Button className="w-full" onClick={() => navigate("/auth")}>
+                    Sign In
                   </Button>
-                ))}
+                )}
+                
+                <div className="pt-4 border-t">
+                  <h3 className="font-semibold text-lg mb-4">Categories</h3>
+                  {categories.map((category) => (
+                    <Button key={category} variant="ghost" className="justify-start w-full">
+                      {category}
+                    </Button>
+                  ))}
+                </div>
               </div>
             </SheetContent>
           </Sheet>
