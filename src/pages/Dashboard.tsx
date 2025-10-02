@@ -10,6 +10,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Plus, Edit, Trash2, ArrowLeft } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SellerOrders } from "@/components/SellerOrders";
 import {
   Dialog,
   DialogContent,
@@ -214,7 +216,7 @@ const Dashboard = () => {
             </Button>
             <div>
               <h1 className="text-3xl font-bold">Seller Dashboard</h1>
-              <p className="text-muted-foreground">Manage your products</p>
+              <p className="text-muted-foreground">Manage your business</p>
             </div>
           </div>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -330,74 +332,87 @@ const Dashboard = () => {
           </Dialog>
         </div>
 
-        {products.length === 0 ? (
-          <Card>
-            <CardHeader>
-              <CardTitle>No products yet</CardTitle>
-              <CardDescription>
-                Start by adding your first product to sell on the marketplace
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        ) : (
-          <Card>
-            <CardHeader>
-              <CardTitle>Your Products</CardTitle>
-              <CardDescription>
-                {products.length} product{products.length !== 1 ? "s" : ""} listed
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Price</TableHead>
-                    <TableHead>Stock</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {products.map((product) => (
-                    <TableRow key={product.id}>
-                      <TableCell className="font-medium">{product.name}</TableCell>
-                      <TableCell>₦{product.price.toLocaleString()}</TableCell>
-                      <TableCell>{product.stock_quantity}</TableCell>
-                      <TableCell>
-                        <span
-                          className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${
-                            product.is_active
-                              ? "bg-green-100 text-green-800"
-                              : "bg-gray-100 text-gray-800"
-                          }`}
-                        >
-                          {product.is_active ? "Active" : "Inactive"}
-                        </span>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleEdit(product)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleDelete(product.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        )}
+        <Tabs defaultValue="products" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 max-w-md">
+            <TabsTrigger value="products">Products</TabsTrigger>
+            <TabsTrigger value="orders">Orders</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="products" className="mt-6">
+            {products.length === 0 ? (
+              <Card>
+                <CardHeader>
+                  <CardTitle>No products yet</CardTitle>
+                  <CardDescription>
+                    Start by adding your first product to sell on the marketplace
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            ) : (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Your Products</CardTitle>
+                  <CardDescription>
+                    {products.length} product{products.length !== 1 ? "s" : ""} listed
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Price</TableHead>
+                        <TableHead>Stock</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {products.map((product) => (
+                        <TableRow key={product.id}>
+                          <TableCell className="font-medium">{product.name}</TableCell>
+                          <TableCell>₦{product.price.toLocaleString()}</TableCell>
+                          <TableCell>{product.stock_quantity}</TableCell>
+                          <TableCell>
+                            <span
+                              className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${
+                                product.is_active
+                                  ? "bg-green-100 text-green-800"
+                                  : "bg-gray-100 text-gray-800"
+                              }`}
+                            >
+                              {product.is_active ? "Active" : "Inactive"}
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => handleEdit(product)}
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => handleDelete(product.id)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+
+          <TabsContent value="orders" className="mt-6">
+            <SellerOrders />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
