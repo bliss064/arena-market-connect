@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import FeaturedProducts from "@/components/FeaturedProducts";
 import DeliverySection from "@/components/DeliverySection";
 import Footer from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
@@ -79,6 +80,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Header />
       <Hero />
+      <FeaturedProducts />
       
       {/* Categories and Products Section */}
       <section className="py-16 bg-gradient-subtle">
