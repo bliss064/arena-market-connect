@@ -94,18 +94,30 @@ const Checkout = () => {
 
       if (orderError) throw orderError;
 
+      // Get product details with seller_id
+      const productIds = cartItems.map(item => item.product_id);
+      const { data: productsData, error: productsError } = await supabase
+        .from("products")
+        .select("id, seller_id")
+        .in("id", productIds);
+
+      if (productsError) throw productsError;
+
       // Create order items
-      const orderItems = cartItems.map((item) => ({
-        order_id: order.id,
-        product_id: item.product_id,
-        quantity: item.quantity,
-        unit_price: item.product.price,
-        subtotal: item.product.price * item.quantity,
-        commission_rate: 10,
-        commission_amount: (item.product.price * item.quantity * 0.1),
-        seller_payout: (item.product.price * item.quantity * 0.9),
-        seller_id: "00000000-0000-0000-0000-000000000000", // Sample seller
-      }));
+      const orderItems = cartItems.map((item) => {
+        const productData = productsData?.find(p => p.id === item.product_id);
+        return {
+          order_id: order.id,
+          product_id: item.product_id,
+          quantity: item.quantity,
+          unit_price: item.product.price,
+          subtotal: item.product.price * item.quantity,
+          commission_rate: 10,
+          commission_amount: (item.product.price * item.quantity * 0.1),
+          seller_payout: (item.product.price * item.quantity * 0.9),
+          seller_id: productData?.seller_id || "00000000-0000-0000-0000-000000000000",
+        };
+      });
 
       const { error: itemsError } = await supabase
         .from("order_items")

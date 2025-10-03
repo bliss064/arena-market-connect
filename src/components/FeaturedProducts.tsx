@@ -1,81 +1,43 @@
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Star, MessageCircle, MapPin } from "lucide-react";
-import riceImage from "@/assets/product-rice.jpg";
-import tomatoesImage from "@/assets/product-tomatoes.jpg";
-import poloImage from "@/assets/product-polo.jpg";
-import sneakersImage from "@/assets/product-sneakers.jpg";
-import mopBucketImage from "@/assets/product-mop-bucket.jpg";
-import chargerImage from "@/assets/product-charger.jpg";
+import { ShoppingCart } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useCart } from "@/hooks/useCart";
+
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  image_url: string;
+  stock_quantity: number;
+}
 
 const FeaturedProducts = () => {
-  const products = [
-    {
-      id: 1,
-      name: "Bag of Rice (25kg)",
-      price: "₦24,000",
-      image: riceImage,
-      vendor: "Mama Chinedu Store, Arena Market",
-      rating: 4.8,
-      reviews: 45,
-      category: "Foodstuff"
-    },
-    {
-      id: 2,
-      name: "Fresh Tomatoes Basket",
-      price: "₦7,500",
-      image: tomatoesImage,
-      vendor: "Arena Fresh Foods",
-      rating: 4.7,
-      reviews: 32,
-      category: "Foodstuff"
-    },
-    {
-      id: 3,
-      name: "Men's Polo Shirt",
-      price: "₦5,500",
-      image: poloImage,
-      vendor: "Arena Trends",
-      rating: 4.6,
-      reviews: 28,
-      category: "Fashion"
-    },
-    {
-      id: 4,
-      name: "Sneakers",
-      price: "₦18,000",
-      image: sneakersImage,
-      vendor: "Arena Footwears",
-      rating: 4.9,
-      reviews: 67,
-      category: "Fashion"
-    },
-    {
-      id: 5,
-      name: "Mop & Bucket Set",
-      price: "₦4,200",
-      image: mopBucketImage,
-      vendor: "Arena Home Supplies",
-      rating: 4.5,
-      reviews: 19,
-      category: "Household"
-    },
-    {
-      id: 6,
-      name: "Phone Charger",
-      price: "₦2,500",
-      image: chargerImage,
-      vendor: "Arena Gadgets",
-      rating: 4.7,
-      reviews: 84,
-      category: "Electronics"
-    }
-  ];
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { addToCart } = useCart();
 
-  const handleAddToCart = (product: any) => {
-    // TODO: Implement cart functionality when Supabase is connected
-    console.log('Add to cart:', product);
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .eq("is_active", true)
+        .limit(6);
+
+      if (error) throw error;
+      setProducts(data || []);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -94,79 +56,46 @@ const FeaturedProducts = () => {
           </p>
         </div>
 
-        {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {products.map((product) => (
-            <Card 
-              key={product.id}
-              className="group hover:shadow-hover transition-all duration-300 cursor-pointer overflow-hidden border-0 shadow-product"
-            >
-              <CardContent className="p-0">
-                {/* Image Section */}
-                <div className="relative h-64 overflow-hidden">
-                  <img 
-                    src={product.image}
-                    alt={product.name}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = "/placeholder.svg";
-                    }}
-                  />
-                  
-                  {/* Category */}
-                  <Badge className="absolute top-3 right-3 bg-white/20 text-white border-white/30">
-                    {product.category}
-                  </Badge>
-                </div>
-
-                {/* Content */}
-                <div className="p-4">
-                  {/* Product Name */}
-                  <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors line-clamp-1">
-                    {product.name}
-                  </h3>
-
-                  {/* Vendor Info */}
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center">
-                      <MapPin className="h-3 w-3 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium">{product.vendor}</p>
-                    </div>
+        {loading ? (
+          <div className="text-center py-16">
+            <p className="text-muted-foreground">Loading products...</p>
+          </div>
+        ) : products.length === 0 ? (
+          <div className="text-center py-16">
+            <p className="text-muted-foreground">No products available</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {products.map((product) => (
+              <Card 
+                key={product.id}
+                className="group hover:shadow-product transition-all duration-300"
+              >
+                <CardContent className="p-4">
+                  <div className="aspect-square overflow-hidden rounded-lg mb-4">
+                    <img 
+                      src={product.image_url || "/placeholder.svg"}
+                      alt={product.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
                   </div>
-
-                  {/* Rating */}
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="flex items-center gap-1">
-                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                      <span className="text-sm font-medium">{product.rating}</span>
-                    </div>
-                    <span className="text-sm text-muted-foreground">
-                      ({product.reviews} reviews)
-                    </span>
+                  <h3 className="font-semibold text-lg mb-2 line-clamp-2">{product.name}</h3>
+                  <div className="flex items-center justify-between">
+                    <span className="text-primary font-bold text-xl">₦{product.price.toLocaleString()}</span>
+                    {product.stock_quantity > 0 ? (
+                      <Button size="sm" onClick={() => addToCart(product.id)}>
+                        <ShoppingCart className="h-4 w-4 mr-1" />
+                        Add
+                      </Button>
+                    ) : (
+                      <span className="text-sm text-muted-foreground">Out of stock</span>
+                    )}
                   </div>
-
-                  {/* Price */}
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="text-xl font-bold text-primary">{product.price}</span>
-                  </div>
-
-                  {/* Action Button */}
-                  <Button 
-                    onClick={() => handleAddToCart(product)}
-                    className="w-full bg-primary hover:bg-primary/90"
-                  >
-                    Add to Cart
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
 
         {/* View All Button */}
         <div className="text-center mt-12">
