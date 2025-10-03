@@ -101,9 +101,13 @@ const Auth = () => {
         description: "You have successfully signed in.",
       });
     } catch (error: any) {
+      const errorMessage = error.message === "Invalid login credentials" 
+        ? "Invalid email or password. Don't have an account? Sign up below."
+        : error.message;
+      
       toast({
-        title: "Error",
-        description: error.message,
+        title: "Sign In Failed",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
