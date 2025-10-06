@@ -29,7 +29,8 @@ const FeaturedProducts = () => {
         .from("products")
         .select("*")
         .eq("is_active", true)
-        .limit(6);
+        .gt("stock_quantity", 0)
+        .limit(3);
 
       if (error) throw error;
       setProducts(data || []);
@@ -97,12 +98,6 @@ const FeaturedProducts = () => {
           </div>
         )}
 
-        {/* View All Button */}
-        <div className="text-center mt-12">
-          <Button size="lg" variant="outline" className="px-8">
-            View All Products
-          </Button>
-        </div>
       </div>
     </section>
   );
