@@ -6,6 +6,7 @@ import { useCart } from "@/hooks/useCart";
 import { ArrowLeft, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { resolveProductImage } from "@/lib/imageResolver";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ const Cart = () => {
                 <CardContent className="p-6">
                   <div className="flex gap-4">
                     <img
-                      src={item.product?.image_url || "/placeholder.svg"}
+                      src={resolveProductImage(item.product?.name || "", item.product?.image_url)}
                       alt={item.product?.name}
                       className="w-24 h-24 object-cover rounded-lg"
                     />

@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
+import { resolveProductImage } from "@/lib/imageResolver";
 
 interface ProductCardProps {
   id: string;
@@ -19,7 +20,7 @@ export const ProductCard = ({ id, name, price, image_url, stock_quantity }: Prod
       <CardContent className="p-4">
         <div className="aspect-square overflow-hidden rounded-lg mb-4">
           <img
-            src={image_url || "/placeholder.svg"}
+            src={resolveProductImage(name, image_url)}
             alt={name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
