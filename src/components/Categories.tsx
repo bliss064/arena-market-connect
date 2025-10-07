@@ -23,13 +23,34 @@ const Categories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Category image and icon mapping
-  const categoryAssets: Record<string, { image: string; icon: any; color: string }> = {
-    "Foodstuff": { image: foodstuffImage, icon: UtensilsCrossed, color: "bg-orange-500" },
-    "Fashion": { image: fashionImage, icon: Shirt, color: "bg-pink-500" },
-    "Household": { image: householdImage, icon: Home, color: "bg-green-500" },
-    "Electronics": { image: electronicsImage, icon: Smartphone, color: "bg-blue-500" },
-    "Accessories": { image: accessoriesImage, icon: Watch, color: "bg-purple-500" },
+  // Helper function to find category assets by matching keywords
+  const getCategoryAssets = (categoryName: string) => {
+    const name = categoryName.toLowerCase();
+    
+    if (name.includes('food') || name.includes('groceries')) {
+      return { image: foodstuffImage, icon: UtensilsCrossed, color: "bg-orange-500" };
+    }
+    if (name.includes('fashion') || name.includes('clothing')) {
+      return { image: fashionImage, icon: Shirt, color: "bg-pink-500" };
+    }
+    if (name.includes('house') || name.includes('home')) {
+      return { image: householdImage, icon: Home, color: "bg-green-500" };
+    }
+    if (name.includes('electron') || name.includes('tech')) {
+      return { image: electronicsImage, icon: Smartphone, color: "bg-blue-500" };
+    }
+    if (name.includes('access') || name.includes('watch') || name.includes('jewelry')) {
+      return { image: accessoriesImage, icon: Watch, color: "bg-purple-500" };
+    }
+    if (name.includes('book') || name.includes('stationary')) {
+      return { image: accessoriesImage, icon: Watch, color: "bg-blue-500" };
+    }
+    if (name.includes('health')) {
+      return { image: foodstuffImage, icon: UtensilsCrossed, color: "bg-green-500" };
+    }
+    
+    // Fallback
+    return { image: "/placeholder.svg", icon: Smartphone, color: "bg-blue-500" };
   };
 
   useEffect(() => {
@@ -86,12 +107,8 @@ const Categories = () => {
 
         {/* Categories Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {categories.map((category, index) => {
-            const assets = categoryAssets[category.name] || { 
-              image: category.image_url || "/placeholder.svg", 
-              icon: Smartphone, 
-              color: "bg-blue-500" 
-            };
+        {categories.map((category, index) => {
+            const assets = getCategoryAssets(category.name);
             const IconComponent = assets.icon;
             
             return (
