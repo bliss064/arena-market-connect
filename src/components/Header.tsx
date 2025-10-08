@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -18,9 +18,17 @@ import {
 
 const Header = () => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const { user, signOut } = useAuth();
   const { cartCount } = useCart();
   const navigate = useNavigate();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+    }
+  };
 
   const categories = [
     "Fashion",
@@ -59,7 +67,7 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between gap-4">
           {/* Logo */}
-          <div className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2">
             <div className="w-10 h-10 bg-marketplace-hero rounded-lg flex items-center justify-center">
               <ShoppingBag className="h-6 w-6 text-white" />
             </div>
@@ -67,10 +75,10 @@ const Header = () => {
               <h1 className="text-xl font-bold text-primary">Arena Market Connect</h1>
               <p className="text-xs text-muted-foreground">Online</p>
             </div>
-          </div>
+          </Link>
 
           {/* Search Bar */}
-          <div className="flex-1 max-w-2xl mx-4">
+          <form onSubmit={handleSearch} className="flex-1 max-w-2xl mx-4">
             <div 
               className={`relative transition-all duration-200 ${
                 isSearchFocused ? 'scale-105' : ''
@@ -80,11 +88,13 @@ const Header = () => {
               <Input
                 placeholder="Search for products, electronics, fashion..."
                 className="pl-10 pr-4 py-3 w-full border-2 transition-colors duration-200"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setIsSearchFocused(true)}
                 onBlur={() => setIsSearchFocused(false)}
               />
             </div>
-          </div>
+          </form>
 
           {/* Mobile Menu */}
           <div className="flex items-center gap-2 md:hidden">

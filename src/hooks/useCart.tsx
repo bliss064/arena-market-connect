@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./useAuth";
 import { useToast } from "./use-toast";
@@ -17,6 +18,7 @@ interface CartItem {
 }
 
 export const useCart = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -70,10 +72,10 @@ export const useCart = () => {
   const addToCart = async (productId: string, quantity: number = 1) => {
     if (!user) {
       toast({
-        title: "Please sign in",
-        description: "You need to be signed in to add items to cart",
-        variant: "destructive",
+        title: "Sign in to add to cart",
+        description: "Click here to sign in and start shopping",
       });
+      setTimeout(() => navigate("/auth"), 1500);
       return;
     }
 

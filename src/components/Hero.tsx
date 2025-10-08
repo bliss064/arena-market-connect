@@ -1,9 +1,19 @@
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Star, Shield, Truck } from "lucide-react";
 import heroImage from "@/assets/hero-marketplace.jpg";
 
 const Hero = () => {
+  const navigate = useNavigate();
+
+  const handleStartShopping = () => {
+    const productsSection = document.getElementById("products");
+    if (productsSection) {
+      productsSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section className="relative overflow-hidden">
       {/* Background with overlay */}
@@ -38,6 +48,7 @@ const Hero = () => {
             <Button 
               size="lg" 
               className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-8 py-4"
+              onClick={handleStartShopping}
             >
               Start Shopping
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -46,6 +57,7 @@ const Hero = () => {
               size="lg" 
               variant="outline" 
               className="border-white text-white hover:bg-white hover:text-primary px-8 py-4"
+              onClick={() => navigate("/auth")}
             >
               Become a Seller
             </Button>
