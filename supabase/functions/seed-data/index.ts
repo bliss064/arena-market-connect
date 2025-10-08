@@ -69,6 +69,9 @@ Deno.serve(async (req) => {
       { name: 'Fresh Tomatoes (1 basket)', category: 'Groceries & Food', price: 5500, stock: 40, image: '/src/assets/product-tomatoes.jpg' },
       
       { name: 'Mop & Bucket Set', category: 'Home & Household', price: 12000, stock: 35, image: '/src/assets/product-mop-bucket.jpg' },
+      
+      { name: 'Wireless Charger', category: 'Electronics', price: 12500, stock: 45, image: '/src/assets/product-charger.jpg' },
+      { name: 'Nike Air Max', category: 'Fashion & Clothing', price: 35000, stock: 20, image: '/src/assets/product-sneakers.jpg' },
     ]
 
     // Clean existing products for this seller to avoid duplicates
