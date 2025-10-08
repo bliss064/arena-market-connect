@@ -13,7 +13,8 @@ Deno.serve(async (req) => {
       }
     )
 
-    // Create a sample seller user
+    // Create or get a sample seller user (idempotent)
+    let sellerId: string
     const { data: sellerAuth, error: sellerAuthError } = await supabaseAdmin.auth.admin.createUser({
       email: 'seller@arenamarket.com',
       password: 'seller123',
@@ -24,14 +25,20 @@ Deno.serve(async (req) => {
     })
 
     if (sellerAuthError) {
-      throw sellerAuthError
+      // If the user already exists, find their ID instead of failing
+      const { data: list, error: listError } = await supabaseAdmin.auth.admin.listUsers()
+      if (listError) throw sellerAuthError
+      const existing = list.users.find((u: any) => u.email === 'seller@arenamarket.com')
+      if (!existing) throw sellerAuthError
+      sellerId = existing.id
+    } else {
+      sellerId = sellerAuth.user.id
     }
 
-    // Update seller profile
+    // Upsert seller profile
     const { error: sellerProfileError } = await supabaseAdmin
       .from('profiles')
-      .update({ role: 'seller', full_name: 'Arena Market Seller' })
-      .eq('id', sellerAuth.user.id)
+      .upsert({ id: sellerId, email: 'seller@arenamarket.com', role: 'seller', full_name: 'Arena Market Seller' })
 
     if (sellerProfileError) {
       throw sellerProfileError
@@ -64,7 +71,10 @@ Deno.serve(async (req) => {
       { name: 'Mop & Bucket Set', category: 'Home & Household', price: 12000, stock: 35, image: '/src/assets/product-mop-bucket.jpg' },
     ]
 
-    // Insert products
+    // Clean existing products for this seller to avoid duplicates
+    await supabaseAdmin.from('products').delete().eq('seller_id', sellerId)
+
+    // Prepare products to insert (set image_url to null so frontend resolver maps bundled assets)
     const productsToInsert = sampleProducts.map(product => {
       const category = categories?.find(c => c.name === product.category)
       return {
@@ -73,8 +83,8 @@ Deno.serve(async (req) => {
         price: product.price,
         stock_quantity: product.stock,
         category_id: category?.id,
-        seller_id: sellerAuth.user.id,
-        image_url: product.image,
+        seller_id: sellerId,
+        image_url: null,
         is_active: true
       }
     })

@@ -13,6 +13,20 @@ import productSpeaker from "@/assets/product-speaker.jpg";
 import productSneakers from "@/assets/product-sneakers.jpg";
 import productCharger from "@/assets/product-charger.jpg";
 
+const filenameMappings: Record<string, string> = {
+  "product-rice.jpg": productRice,
+  "product-iphone.jpg": productIphone,
+  "product-polo.jpg": productPolo,
+  "product-mop-bucket.jpg": productMop,
+  "product-palmoil.jpg": productPalmOil,
+  "product-ankara.jpg": productAnkara,
+  "product-necklace.jpg": productNecklace,
+  "product-tomatoes.jpg": productTomatoes,
+  "product-speaker.jpg": productSpeaker,
+  "product-sneakers.jpg": productSneakers,
+  "product-charger.jpg": productCharger,
+};
+
 const mappings: { test: RegExp; src: string }[] = [
   { test: /rice/i, src: productRice },
   { test: /iphone/i, src: productIphone },
