@@ -11,6 +11,8 @@ const Hero = () => {
     const productsSection = document.getElementById("products");
     if (productsSection) {
       productsSection.scrollIntoView({ behavior: "smooth" });
+    } else {
+      navigate("/#products");
     }
   };
 
@@ -57,7 +59,7 @@ const Hero = () => {
               size="lg" 
               variant="outline" 
               className="border-white text-white hover:bg-white hover:text-primary px-8 py-4"
-              onClick={() => navigate("/auth")}
+              onClick={() => navigate("/auth?mode=signup&role=seller")}
             >
               Become a Seller
             </Button>

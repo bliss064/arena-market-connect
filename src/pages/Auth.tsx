@@ -42,6 +42,14 @@ const Auth = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const mode = params.get("mode");
+    const roleParam = params.get("role");
+    if (mode === "signup") setIsLogin(false);
+    if (roleParam === "buyer" || roleParam === "seller") setRole(roleParam as "buyer" | "seller");
+  }, [location.search]);
+
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -153,7 +161,10 @@ const Auth = () => {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => navigate("/")}
+              onClick={() => {
+                if (window.history.length > 1) navigate(-1);
+                else navigate("/");
+              }}
               aria-label="Go back to home"
             >
               <ArrowLeft className="h-5 w-5" />
