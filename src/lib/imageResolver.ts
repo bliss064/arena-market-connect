@@ -42,12 +42,35 @@ const mappings: { test: RegExp; src: string }[] = [
 ];
 
 export function resolveProductImage(name: string, imageUrl?: string | null): string {
-  // If the backend provided a real URL that's not the placeholder, use it as-is
+  // If the backend provided something and it's not the placeholder, resolve it smartly
   if (imageUrl && imageUrl !== "/placeholder.svg") {
+    const lower = imageUrl.toLowerCase();
+
+    // If it's an absolute/external url or a public path, use as-is
+    if (
+      lower.startsWith("http://") ||
+      lower.startsWith("https://") ||
+      lower.startsWith("data:") ||
+      lower.startsWith("blob:") ||
+      lower.startsWith("/storage/") ||
+      lower.startsWith("/assets/") ||
+      lower.startsWith("/images/") ||
+      lower.startsWith("/")
+    ) {
+      return imageUrl;
+    }
+
+    // If backend sent just a filename, map to bundled asset
+    const filename = imageUrl.split("?")[0].split("#")[0].split("/").pop() || imageUrl;
+    if (filename in filenameMappings) {
+      return filenameMappings[filename];
+    }
+
+    // Unknown relative path - return as-is
     return imageUrl;
   }
 
-  // Try to map by name keywords
+  // Map by name keywords
   for (const { test, src } of mappings) {
     if (test.test(name)) return src;
   }

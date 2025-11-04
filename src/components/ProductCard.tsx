@@ -22,7 +22,13 @@ export const ProductCard = ({ id, name, price, image_url, stock_quantity }: Prod
           <img
             src={resolveProductImage(name, image_url)}
             alt={name}
+            loading="lazy"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            onError={(e) => {
+              if (e.currentTarget.src !== "/placeholder.svg") {
+                e.currentTarget.src = "/placeholder.svg";
+              }
+            }}
           />
         </div>
         <h3 className="font-semibold text-lg mb-2 line-clamp-2">{name}</h3>
