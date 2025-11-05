@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useUserRole } from "@/hooks/useUserRole";
 import { Button } from "@/components/ui/button";
+import { productSchema, getSafeErrorMessage } from "@/lib/validation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -47,6 +49,7 @@ interface Category {
 
 const Dashboard = () => {
   const { user, loading: authLoading } = useAuth();
+  const { isSeller, loading: roleLoading } = useUserRole();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [products, setProducts] = useState<Product[]>([]);
@@ -66,8 +69,15 @@ const Dashboard = () => {
   useEffect(() => {
     if (!authLoading && !user) {
       navigate("/auth");
+    } else if (!authLoading && !roleLoading && !isSeller) {
+      toast({
+        title: "Access Denied",
+        description: "Only sellers can access the dashboard.",
+        variant: "destructive",
+      });
+      navigate("/");
     }
-  }, [user, authLoading, navigate]);
+  }, [user, authLoading, isSeller, roleLoading, navigate, toast]);
 
   useEffect(() => {
     if (user) {
@@ -116,13 +126,22 @@ const Dashboard = () => {
     setLoading(true);
 
     try {
-      const productData = {
+      // Validate product data
+      const validatedData = productSchema.parse({
         name: formData.name,
-        description: formData.description,
+        description: formData.description || undefined,
         price: parseFloat(formData.price),
         stock_quantity: parseInt(formData.stock_quantity),
+        image_url: formData.image_url || undefined,
+      });
+
+      const productData = {
+        name: validatedData.name,
+        description: validatedData.description,
+        price: validatedData.price,
+        stock_quantity: validatedData.stock_quantity,
+        image_url: validatedData.image_url,
         category_id: formData.category_id || null,
-        image_url: formData.image_url || null,
         seller_id: user?.id,
       };
 
@@ -145,11 +164,20 @@ const Dashboard = () => {
       resetForm();
       fetchProducts();
     } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
+      // Handle validation errors
+      if (error.issues) {
+        toast({
+          title: "Validation Error",
+          description: error.issues[0]?.message || "Please check your inputs",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: getSafeErrorMessage(error),
+          variant: "destructive",
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -180,7 +208,7 @@ const Dashboard = () => {
     } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message,
+        description: getSafeErrorMessage(error),
         variant: "destructive",
       });
     }
@@ -198,7 +226,7 @@ const Dashboard = () => {
     setEditingProduct(null);
   };
 
-  if (authLoading || loading) {
+  if (authLoading || roleLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin" />

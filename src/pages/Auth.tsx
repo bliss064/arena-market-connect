@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Auth as SupabaseAuth } from "@supabase/auth-ui-react";
-import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { emailSchema, passwordSchema, fullNameSchema, getSafeErrorMessage } from "@/lib/validation";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -55,12 +54,17 @@ const Auth = () => {
     setLoading(true);
 
     try {
+      // Validate inputs
+      const validatedEmail = emailSchema.parse(email);
+      const validatedPassword = passwordSchema.parse(password);
+      const validatedFullName = fullNameSchema.parse(fullName);
+
       const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
+        email: validatedEmail,
+        password: validatedPassword,
         options: {
           data: {
-            full_name: fullName,
+            full_name: validatedFullName,
           },
           emailRedirectTo: `${window.location.origin}/`,
         },
@@ -69,14 +73,26 @@ const Auth = () => {
       if (error) throw error;
 
       if (data.user) {
-        // Update user role in profiles table
+        // Update user profile with full name
         const { error: profileError } = await supabase
           .from("profiles")
-          .update({ role, full_name: fullName })
+          .update({ full_name: validatedFullName })
           .eq("id", data.user.id);
 
         if (profileError) {
-          console.error("Error updating profile:", profileError);
+          console.error("Error updating profile");
+        }
+
+        // Assign role to user in user_roles table
+        const { error: roleError } = await supabase
+          .from("user_roles")
+          .insert({
+            user_id: data.user.id,
+            role: role,
+          });
+
+        if (roleError) {
+          console.error("Error assigning role");
         }
 
         toast({
@@ -85,11 +101,20 @@ const Auth = () => {
         });
       }
     } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
+      // Handle validation errors
+      if (error.issues) {
+        toast({
+          title: "Validation Error",
+          description: error.issues[0]?.message || "Please check your inputs",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: getSafeErrorMessage(error),
+          variant: "destructive",
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -100,9 +125,13 @@ const Auth = () => {
     setLoading(true);
 
     try {
+      // Validate inputs
+      const validatedEmail = emailSchema.parse(email);
+      const validatedPassword = passwordSchema.parse(password);
+
       const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+        email: validatedEmail,
+        password: validatedPassword,
       });
 
       if (error) throw error;
@@ -112,15 +141,24 @@ const Auth = () => {
         description: "You have successfully signed in.",
       });
     } catch (error: any) {
-      const errorMessage = error.message === "Invalid login credentials" 
-        ? "Invalid email or password. Don't have an account? Sign up below."
-        : error.message;
-      
-      toast({
-        title: "Sign In Failed",
-        description: errorMessage,
-        variant: "destructive",
-      });
+      // Handle validation errors
+      if (error.issues) {
+        toast({
+          title: "Validation Error",
+          description: error.issues[0]?.message || "Please check your inputs",
+          variant: "destructive",
+        });
+      } else {
+        const errorMessage = error.message === "Invalid login credentials" 
+          ? "Invalid email or password. Don't have an account? Sign up below."
+          : getSafeErrorMessage(error);
+        
+        toast({
+          title: "Sign In Failed",
+          description: errorMessage,
+          variant: "destructive",
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -131,7 +169,10 @@ const Auth = () => {
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      // Validate email
+      const validatedEmail = emailSchema.parse(email);
+
+      const { error } = await supabase.auth.resetPasswordForEmail(validatedEmail, {
         redirectTo: `${window.location.origin}/auth?resetPassword=true`,
       });
 
@@ -143,11 +184,20 @@ const Auth = () => {
       });
       setIsForgotPassword(false);
     } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
+      // Handle validation errors
+      if (error.issues) {
+        toast({
+          title: "Validation Error",
+          description: error.issues[0]?.message || "Please enter a valid email",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: getSafeErrorMessage(error),
+          variant: "destructive",
+        });
+      }
     } finally {
       setLoading(false);
     }

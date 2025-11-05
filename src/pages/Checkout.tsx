@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { deliveryAddressSchema, notesSchema, getSafeErrorMessage } from "@/lib/validation";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -49,19 +50,32 @@ const Checkout = () => {
 
     setLoading(true);
     try {
+      // Validate notes
+      const validatedNotes = notesSchema.parse(formData.notes);
+
       // Create delivery address if home delivery
       let addressId = null;
       if (deliveryMethod === "home_delivery") {
+        // Validate delivery address
+        const validatedAddress = deliveryAddressSchema.parse({
+          full_name: formData.full_name,
+          phone: formData.phone,
+          address_line1: formData.address_line1,
+          address_line2: formData.address_line2 || undefined,
+          city: formData.city,
+          state: formData.state,
+        });
+
         const { data: address, error: addressError } = await supabase
           .from("delivery_addresses")
           .insert({
             user_id: user.id,
-            full_name: formData.full_name,
-            phone: formData.phone,
-            address_line1: formData.address_line1,
-            address_line2: formData.address_line2,
-            city: formData.city,
-            state: formData.state,
+            full_name: validatedAddress.full_name,
+            phone: validatedAddress.phone,
+            address_line1: validatedAddress.address_line1,
+            address_line2: validatedAddress.address_line2,
+            city: validatedAddress.city,
+            state: validatedAddress.state,
           })
           .select()
           .single();
@@ -84,7 +98,7 @@ const Checkout = () => {
           total_amount: total,
           delivery_method: deliveryMethod,
           delivery_address_id: addressId,
-          notes: formData.notes,
+          notes: validatedNotes,
           status: "pending",
           payment_status: "completed", // Mock payment
           payment_reference: `PAY-${Date.now()}`,
@@ -135,11 +149,20 @@ const Checkout = () => {
 
       navigate("/orders");
     } catch (error: any) {
-      toast({
-        title: "Error placing order",
-        description: error.message,
-        variant: "destructive",
-      });
+      // Handle validation errors
+      if (error.issues) {
+        toast({
+          title: "Validation Error",
+          description: error.issues[0]?.message || "Please check your inputs",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Error placing order",
+          description: getSafeErrorMessage(error),
+          variant: "destructive",
+        });
+      }
     } finally {
       setLoading(false);
     }
