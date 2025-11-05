@@ -78,7 +78,13 @@ const FeaturedProducts = () => {
                     <img 
                       src={resolveProductImage(product.name, product.image_url)}
                       alt={product.name}
+                      loading="lazy"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      onError={(e) => {
+                        if (e.currentTarget.src !== "/placeholder.svg") {
+                          e.currentTarget.src = "/placeholder.svg";
+                        }
+                      }}
                     />
                   </div>
                   <h3 className="font-semibold text-lg mb-2 line-clamp-2">{product.name}</h3>
