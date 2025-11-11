@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, Menu, X, ShoppingBag, MapPin, Phone, User, ShoppingCart } from "lucide-react";
+import { Search, Menu, X, ShoppingBag, MapPin, Phone, User, ShoppingCart, Heart } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { useAuth } from "@/hooks/useAuth";
 import { useCart } from "@/hooks/useCart";
@@ -152,6 +152,9 @@ const Header = () => {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
+            <Button variant="ghost" size="icon" onClick={() => navigate("/wishlist")}>
+              <Heart className="h-5 w-5" />
+            </Button>
             <Button variant="ghost" size="icon" onClick={() => navigate("/cart")} className="relative">
               <ShoppingCart className="h-5 w-5" />
               {cartCount > 0 && (

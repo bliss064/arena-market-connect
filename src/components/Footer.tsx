@@ -93,9 +93,9 @@ const Footer = () => {
             <ul className="space-y-3">
               <li><a href="#" className="text-primary-foreground/80 hover:text-accent transition-colors">How to Order</a></li>
               <li><a href="#" className="text-primary-foreground/80 hover:text-accent transition-colors">Delivery Info</a></li>
-              <li><a href="#" className="text-primary-foreground/80 hover:text-accent transition-colors">Return Policy</a></li>
+              <li><a href="/return-policy" className="text-primary-foreground/80 hover:text-accent transition-colors">Return Policy</a></li>
               <li><a href="#" className="text-primary-foreground/80 hover:text-accent transition-colors">Payment Methods</a></li>
-              <li><a href="#" className="text-primary-foreground/80 hover:text-accent transition-colors">Track Order</a></li>
+              <li><a href="/orders" className="text-primary-foreground/80 hover:text-accent transition-colors">Track Order</a></li>
               <li><a href="#" className="text-primary-foreground/80 hover:text-accent transition-colors">Help Center</a></li>
             </ul>
           </div>
@@ -182,9 +182,9 @@ const Footer = () => {
             Arena Market Online – Bringing Arena sellers closer to buyers.
           </p>
           <div className="flex gap-6 text-sm">
-            <a href="#" className="text-primary-foreground/80 hover:text-accent transition-colors">Privacy Policy</a>
-            <a href="#" className="text-primary-foreground/80 hover:text-accent transition-colors">Terms of Service</a>
-            <a href="#" className="text-primary-foreground/80 hover:text-accent transition-colors">Cookies</a>
+            <a href="/privacy" className="text-primary-foreground/80 hover:text-accent transition-colors">Privacy Policy</a>
+            <a href="/terms" className="text-primary-foreground/80 hover:text-accent transition-colors">Terms of Service</a>
+            <a href="/return-policy" className="text-primary-foreground/80 hover:text-accent transition-colors">Return Policy</a>
           </div>
         </div>
 

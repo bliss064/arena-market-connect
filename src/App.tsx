@@ -14,6 +14,11 @@ import SeedData from "./pages/SeedData";
 import CategoryProducts from "./pages/CategoryProducts";
 import NotFound from "./pages/NotFound";
 import Search from "./pages/Search";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+import ReturnPolicy from "./pages/ReturnPolicy";
+import Wishlist from "./pages/Wishlist";
+import ProductDetail from "./pages/ProductDetail";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +39,11 @@ const App = () => (
           <Route path="/category" element={<CategoryProducts />} />
           <Route path="/seed-data" element={<SeedData />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/return-policy" element={<ReturnPolicy />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
