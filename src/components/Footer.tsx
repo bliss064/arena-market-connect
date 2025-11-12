@@ -96,7 +96,7 @@ const Footer = () => {
               <li><a href="/return-policy" className="text-primary-foreground/80 hover:text-accent transition-colors">Return Policy</a></li>
               <li><a href="#" className="text-primary-foreground/80 hover:text-accent transition-colors">Payment Methods</a></li>
               <li><a href="/orders" className="text-primary-foreground/80 hover:text-accent transition-colors">Track Order</a></li>
-              <li><a href="#" className="text-primary-foreground/80 hover:text-accent transition-colors">Help Center</a></li>
+              <li><a href="/contact" className="text-primary-foreground/80 hover:text-accent transition-colors">Contact Us</a></li>
             </ul>
           </div>
 
